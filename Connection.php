@@ -1,24 +1,20 @@
 <?php
 class Connection
 {
-    public $con;
-    function  getconect()
-    {
-        try
-        {
-            $this->con= $conn = new mysqli('localhost','root', '','atbmtt');
 
-        }
-        catch (Exception $e)
-        {
-            die("kết nối không thành công: ".$e->getMessage());
+    public function getConnection() {
+        try {
+            $connection = new PDO('mysql:host=localhost;dbname=atbmtt;charset=utf8',
+                'root', '');
+        } catch (PDOException $e) {
+            die("Kết nối CSDL theo PDO thất bại: " . $e->getMessage());
         }
 
-        return $this->con;
+        return $connection;
     }
-    function closeConnect()
-    {
-        $this->con->close();
+
+    public function closeConnection() {
+        $this->connection = null;
     }
 
 }

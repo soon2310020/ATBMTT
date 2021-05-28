@@ -1,6 +1,13 @@
 <?php
 session_start();
-echo "Đăng nhập thành công";
+if (!isset($_SESSION['username']))
+{
+    header("location:login.php");
+    exit();
+}
+echo "Đăng nhập thành công tên bạn là:";
+echo $_SESSION['username'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,6 +20,7 @@ echo "Đăng nhập thành công";
     <title>Register</title>
 </head>
 <body>
-<a href="login.php" class="btn-dark btn">login</a>
+<br>
+<a href="logout.php" class="btn-dark btn">Đăng xuất</a>
 </body>
 </html>

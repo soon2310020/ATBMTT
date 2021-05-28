@@ -2,11 +2,15 @@
 require_once 'connection.php';
 session_start();
 $con = new Connection();
-$conn = $con->getconect();
+$conn = $con->getConnection();
 //echo "<pre>";
 //print_r($_POST);
 //echo "</pre>";
-
+if (isset($_SESSION['username']))
+{
+    header("location:home.php");
+    exit();
+}
 if (isset($_POST['login'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
@@ -24,14 +28,29 @@ if (isset($_POST['login'])) {
     else
     {
         $password=md5($password);
-        $result= $conn->query("select * from users where username='$username'AND password='$password'");
-        if ($result->num_rows >0) {
-            $_SESSION['username'] = $username;
-
+        //code lỗi
+        $obj_select = $conn
+            ->prepare("SELECT * FROM users WHERE username='$username' AND password='$password' LIMIT 1");
+        $obj_select->execute();
+        //hết code lỗi
+        //code sửa lỗi
+//        $username=htmlspecialchars($username);
+//        $obj_select = $conn
+//            ->prepare("SELECT * FROM users WHERE username=:username AND password=:password LIMIT 1");
+//        $arr_select = [
+//            ':username' => $username,
+//            ':password' => $password,
+//        ];
+//        $obj_select->execute($arr_select);
+        //hết sửa lỗi
+        $user = $obj_select->fetch(PDO::FETCH_ASSOC);
+        if(!empty($user))
+        {
+            $_SESSION['username']=$user['username'];
             header("location:home.php");
             exit();
-
-        } else {
+        }
+        else {
             $error = "Sai tên hoặc mật khẩu";
         }
     }

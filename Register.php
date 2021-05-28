@@ -2,11 +2,14 @@
 require_once 'connection.php';
 session_start();
 $con = new Connection();
-$conn = $con->getconect();
+$conn = $con->getConnection();
 //echo "<pre>";
 //print_r($_POST);
 //echo "</pre>";
-
+if (isset($_SESSION['username'])) {
+    header("location:home.php");
+    exit();
+}
 if (isset($_POST['register'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
@@ -25,13 +28,26 @@ if (isset($_POST['register'])) {
     } else if ($password != $repassword) {
         $error = "Mật khẩu nhập lại phải khớp mật khẩu";
 
-    }
-    else
-    {
+    } else {
         $password = md5($password);
-        $sql="insert into users(username,password) values ('$username','$password')";
+//        code lỗi
+        $obj_insert = $conn
+            ->prepare("INSERT INTO users(username,password)
+VALUES('$username','$password')");
+        $check = $obj_insert->execute();
+//        hết code lỗi
+//        code sửa lỗi
+//        $username=htmlspecialchars($username);
+//        $obj_insert = $conn
+//            ->prepare("INSERT INTO users(username,password)
+//VALUES(:username,:password)");
+//        $arr_insert = [
+//            ':username' => $username,
+//            ':password' => $password
+//        ];
+//        $check = $obj_insert->execute($arr_insert);
+//        hết code sửa lỗi
 
-        $check = mysqli_query($conn,$sql);
         if ($check == true) {
             $_SESSION['success'] = "Đăng Ký Thành Công";
             header("location:login.php");
@@ -227,11 +243,11 @@ if (isset($_POST['register'])) {
 
                             <label for="inputPassword2">Nhập Lại Mật Khẩu</label>
                         </div>
-                        <div class="form-group row" >
+                        <div class="form-group row">
                             <button class="btn  btn-primary col-6" type="submit" name="register">
                                 Đăng ký
                             </button>
-                            <a class="btn btn-google col-6"  href="login.php">
+                            <a class="btn btn-google col-6" href="login.php">
                                 Đăng nhập
                             </a>
                         </div>
@@ -250,7 +266,7 @@ if (isset($_POST['register'])) {
 <script type="text/javascript" src="bootstrap.min.js"/>
 <script>
     $(document).ready(function () {
-       alert('aaaaaaaaaa');
+        alert('aaaaaaaaaa');
     })
 </script>
 </html>
