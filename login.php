@@ -65,7 +65,7 @@ if (isset($_POST['login'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="all.css"/>
     <link rel="stylesheet" type="text/css" href="bootstrap.min.css"/>
-    <title>Register</title>
+    <title>Login</title>
     <style>
         :root {
             --input-padding-x: 1.5rem;
@@ -226,7 +226,7 @@ if (isset($_POST['login'])) {
                         <div class="form-label-group">
                             <input type="text" id="inputEmail" class="form-control" placeholder="Tên ĐĂng Nhập"
                                    name="username" value="<?php if (!empty($username)) {
-                                echo $username;
+                                echo htmlspecialchars($username);
                             } ?>">
                             <label for="inputEmail">Tên Đăng Nhập</label>
                         </div>
@@ -255,14 +255,9 @@ if (isset($_POST['login'])) {
     </div>
 </div>
 </body>
-<!--<script type="text/javascript" src="jquery.slim.min.js"/>-->
-<!--<script type="text/javascript" src="bootstrap.bundle.min.js"/>-->
 <script type="text/javascript" src="jquery.min.js"/>
 <script type="text/javascript" src="jquery-ui.min.js"/>
 <script type="text/javascript" src="bootstrap.min.js"/>
 <script>
-    $(document).ready(function () {
-        alert('aaaaaaaaaa');
-    })
 </script>
 </html>

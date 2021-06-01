@@ -14,12 +14,18 @@ if (isset($_POST['register'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
     $repassword = $_POST['repassword'];
+    $regex = "/^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/";
     $error = "";
     $success = "";
     if (empty($username)) {
         $error = "Vui lòng nhập tên đăng nhập";
 
-    } else if (empty($password)) {
+    }
+//    else if (!preg_match($regex,$username))
+//    {
+//      $error ="Vui lòng không nhập ký tự đặc biệt";
+//    }
+    else if (empty($password)) {
         $error = "Vui lòng nhập mật khẩu";
 
     } else if (empty($repassword)) {
@@ -225,7 +231,7 @@ VALUES('$username','$password')");
                         <div class="form-label-group">
                             <input type="text" id="inputEmail" class="form-control" placeholder="Tên ĐĂng Nhập"
                                    name="username" value="<?php if (!empty($username)) {
-                                echo $username;
+                                echo htmlspecialchars( $username);
                             } ?>">
                             <label for="inputEmail">Tên Đăng Nhập</label>
                         </div>
